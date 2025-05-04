@@ -39,15 +39,16 @@ command_line_downloader.py [-h] [--output OUTPUT] [--start-page START_PAGE] mang
 ```
 
 positional arguments:
-  manga                 The name of the manga (e.g., "boruto_two_blue_vortex"). Get the name from mangafreak
-  chapter               The chapter number to download (e.g., 20).
+
+- manga                 The name of the manga (e.g., "boruto_two_blue_vortex"). Get the name from mangafreak
+
+- chapter               The chapter number to download (e.g., 20).
 
 options:
-  -h, --help            show help message
-  --output OUTPUT, -o OUTPUT
-                        Directory to save the downloaded chapter images. (default: .)
-  --start-page START_PAGE, -s START_PAGE
-                        The page number to start downloading from. (default: 1)
+
+- -h, --help            show help message
+- --output OUTPUT, -o OUTPUT Directory to save the downloaded chapter images. (default: .)
+- --start-page START_PAGE, -s START_PAGE The page number to start downloading from. (default: 1)
 
 ## Contributing
 
