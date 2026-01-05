@@ -63,6 +63,29 @@ def download_chapter(manga_name, chapter_num, output_dir=".", start_page=1):
     print(f"Finished attempting to download Chapter {chapter_num} of {manga_name}.")
 
 
+def parse_chapters(chapter_arg):
+    """
+    Parses a chapter string which can be a single number, a comma-separated list,
+    or a range (e.g., "1-5", "1,3,5", "1-3,5").
+    Returns a sorted list of unique chapter numbers.
+    """
+    chapters = set()
+    parts = chapter_arg.split(',')
+    for part in parts:
+        part = part.strip()
+        if '-' in part:
+            try:
+                start, end = map(int, part.split('-'))
+                chapters.update(range(start, end + 1))
+            except ValueError:
+                print(f"Warning: Invalid range format '{part}'. Skipping.")
+        else:
+            try:
+                chapters.add(int(part))
+            except ValueError:
+                print(f"Warning: Invalid chapter number '{part}'. Skipping.")
+    return sorted(list(chapters))
+
 # 2. Setup argparse and call the main function
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -79,8 +102,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         'chapter',
-        type=int, # Expect an integer for the chapter number
-        help='The chapter number to download (e.g., 20).'
+        type=str, # Expect a string for the chapter range/list
+        help='The chapter number(s) to download. Can be a single number (e.g., "20"), a range (e.g., "11-20"), or a list (e.g., "1,2,5").'
     )
 
     parser.add_argument(
@@ -100,5 +123,13 @@ if __name__ == "__main__":
     # Parse the command-line arguments
     args = parser.parse_args()
 
-    # Call the main download function with the parsed arguments
-    download_chapter(args.manga, args.chapter, args.output, args.start_page)
+    # Parse the chapter argument into a list of integers
+    chapters_to_download = parse_chapters(args.chapter)
+
+    if not chapters_to_download:
+        print("No valid chapters found to download.")
+    else:
+        print(f"Scheduled to download chapters: {chapters_to_download}")
+        # Iterate over the parsed chapters and download each one
+        for chapter_num in chapters_to_download:
+            download_chapter(args.manga, chapter_num, args.output, args.start_page)
