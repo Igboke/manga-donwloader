@@ -50,6 +50,45 @@ options:
 - --output OUTPUT, -o OUTPUT Directory to save the downloaded chapter images. (default: .)
 - --start-page START_PAGE, -s START_PAGE The page number to start downloading from. (default: 1)
 
+---
+
+## Check for New Chapters
+
+Use `check_new_chapter.py` to quickly check if a new chapter is available:
+
+```bash
+python check_new_chapter.py [-h] [--output OUTPUT] [--download] [--check-chapter CHECK_CHAPTER] manga
+```
+
+### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `manga` | The name of the manga (e.g., `kingdom`, `kagura_bachi`) |
+| `-o`, `--output` | Directory where chapters are saved (used to find last chapter). Default: `.` |
+| `-d`, `--download` | Automatically download the new chapter if available |
+| `-c`, `--check-chapter` | Manually specify which chapter to check (overrides auto-detection) |
+
+### Examples
+
+```bash
+# Check if a new Kingdom chapter exists
+python check_new_chapter.py kingdom -o kingdom_manga
+
+# Check and auto-download if available
+python check_new_chapter.py kagura_bachi -o kagura_bachi --download
+
+# Manually check a specific chapter number
+python check_new_chapter.py boruto_two_blue_vortex -c 25
+```
+
+### How It Works
+
+1. Scans the output directory for existing chapter folders (e.g., `kingdom_chapter_650`)
+2. Determines the highest chapter number you have
+3. Makes a HEAD request to check if `last_chapter + 1` exists
+4. Reports whether a new chapter is available (with exit code 0 if yes, 1 if no)
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request.
